@@ -16,6 +16,10 @@ const CreateCard = () => {
 
   function onSubmit(event) {
     event.preventDefault();
+    if (!FormData.front || !formData.back) {
+      alert("Need to fill both front and back");
+      return;
+    }
     const id = Date.now();
     const newCard = {
       id,

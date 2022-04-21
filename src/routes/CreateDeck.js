@@ -6,15 +6,17 @@ import DeckForm from "../Components/DeckForm";
 import { useDispatch, useSelector } from "react-redux";
 import { addDeck } from "../redux/deckSlice";
 const CreateDeck = () => {
-  //variables
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const decks = useSelector((state) => state.data.decks);
   const _initialFormData = { name: "", desc: "" };
   const [formData, setFormData] = useState(_initialFormData);
 
   function onSubmit(event) {
     event.preventDefault();
+    if (!formData.name) {
+      alert("Name is Required");
+      return;
+    }
     const id = Date.now();
     const newDeck = { ...formData, id };
     dispatch(addDeck({ newDeck }));
