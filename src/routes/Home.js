@@ -2,7 +2,7 @@ import React from "react";
 import { FaEye, FaSave, FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux/es/exports";
-import { deleteCard, deleteDeck } from "../redux/deckSlice";
+import { deleteAllCardsInDeck, deleteDeck } from "../redux/deckSlice";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -11,7 +11,7 @@ const Home = () => {
   function handleDeleteDeck(id) {
     const confirm = window.confirm("This will delete the deck and cards");
     if (confirm) {
-      dispatch(deleteCard({ type: "deck", id }));
+      dispatch(deleteAllCardsInDeck({ id }));
       dispatch(deleteDeck({ id }));
     }
   }

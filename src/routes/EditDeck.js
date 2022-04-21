@@ -1,24 +1,27 @@
 import React, { useState } from "react";
 import BreadCrumb from "../Components/BreadCrumb";
 import { useParams } from "react-router-dom";
-import data from "../db";
 import DeckForm from "../Components/DeckForm";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { updateDeck } from "../redux/deckSlice";
 
-const { decks, cards } = data;
 const EditDeck = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { deckId } = useParams();
+
+  const decks = useSelector((state) => state.data.decks);
   const currentDeck = decks.find((item) => item.id == deckId);
-  const [deckData, setDeckData] = useState({
+
+  const [formData, setFormData] = useState({
     name: currentDeck.name,
     desc: currentDeck.description,
   });
 
   function onSubmit(event) {
     event.preventDefault();
-    currentDeck.name = deckData.name;
-    currentDeck.description = deckData.desc;
+    dispatch(updateDeck({ formData, deckId }));
     navigate(`/decks/${deckId}`);
   }
 
@@ -30,8 +33,8 @@ const EditDeck = () => {
       />
       <DeckForm
         onSubmit={onSubmit}
-        formData={deckData}
-        setFormData={setDeckData}
+        formData={formData}
+        setFormData={setFormData}
         prevUrl={`/decks/${deckId}`}
       />
     </div>

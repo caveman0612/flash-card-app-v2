@@ -61,17 +61,27 @@ const deckSlice = createSlice({
       const index = state.decks.findIndex((item) => item.id == id);
       state.decks.splice(index, 1);
     },
-    addCard: (state, action) => {},
-    deleteCard: (state, action) => {
-      const { type, id } = action.payload;
-      if (type == "deck") {
-        const filtered = state.cards.filter((item) => item.deckId != id);
-        state.cards = filtered;
-      } else if (type == "card") {
-      }
+    updateDeck: (state, action) => {
+      const { formData, deckId } = action.payload;
+      const index = state.decks.findIndex((item) => item.id == deckId);
+      state.decks[index].name = formData.name;
+      state.decks[index].description = formData.desc;
     },
-    updateDeck: (state, action) => {},
-    updateCard: (state, action) => {},
+    deleteAllCardsInDeck: (state, action) => {
+      const { id } = action.payload;
+      const filtered = state.cards.filter((item) => item.deckId != id);
+      state.cards = filtered;
+    },
+    addCard: (state, action) => {
+      const { newCard } = action.payload;
+      state.cards.push(newCard);
+    },
+    deleteCard: (state, action) => {},
+    updateCard: (state, action) => {
+      const { cardData } = action.payload;
+      const index = state.cards.findIndex((item) => item.id == cardData.id);
+      state.cards[index] = cardData;
+    },
   },
 });
 
@@ -82,6 +92,7 @@ export const {
   deleteCard,
   updateDeck,
   updateCard,
+  deleteAllCardsInDeck,
 } = deckSlice.actions;
 
 export default deckSlice.reducer;

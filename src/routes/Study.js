@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import BreadCrumb from "../Components/BreadCrumb";
-import data from "../db";
+import { useSelector } from "react-redux";
 
-const { decks, cards } = data;
 const Study = () => {
   const { deckId } = useParams();
+  const { decks, cards } = useSelector((state) => state.data);
+
   const currentDeck = decks.find((item) => item.id == deckId);
   const cardsInDeck = cards.filter((item) => item.deckId == deckId);
 
   const _initialStudyState = { count: 0, frontShow: true };
   const [studyState, setStudyState] = useState(_initialStudyState);
 
-  // let count = 0;
   const length = cardsInDeck.length;
 
   function onFlip() {
@@ -24,8 +24,8 @@ const Study = () => {
       const confirm = window.confirm("Do you want to restart the cards?");
       if (confirm) {
         setStudyState(_initialStudyState);
-        return;
       }
+      return;
     }
     setStudyState({ frontShow: true, count: studyState.count + 1 });
   }

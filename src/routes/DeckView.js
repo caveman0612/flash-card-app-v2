@@ -1,19 +1,29 @@
 import React from "react";
 import BreadCrumb from "../Components/BreadCrumb";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { FaTrash, FaSave } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
 import { AiOutlinePlus } from "react-icons/ai";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { deleteAllCardsInDeck, deleteDeck } from "../redux/deckSlice";
 
 const DeckView = () => {
   const { deckId } = useParams();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const decks = useSelector((state) => state.data.decks);
   const cards = useSelector((state) => state.data.cards);
   const currentDeck = decks.find((item) => item.id == deckId);
   const cardsInDeck = cards.filter((item) => item.deckId == deckId);
 
-  function handleDeckDelete() {}
+  function handleDeckDelete(id) {
+    const confirm = window.confirm("This will delete the deck and cards");
+    if (confirm) {
+      dispatch(deleteAllCardsInDeck({ id }));
+      dispatch(deleteDeck({ id }));
+      navigate("/");
+    }
+  }
   return (
     <div className="container w-75">
       <BreadCrumb current={currentDeck.name} />
@@ -43,7 +53,7 @@ const DeckView = () => {
         </Link>
         <button
           className="ms-auto btn btn-danger p-2"
-          onClick={handleDeckDelete}
+          onClick={() => handleDeckDelete(deckId)}
         >
           <FaTrash />
         </button>

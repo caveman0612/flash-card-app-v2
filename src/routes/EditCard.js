@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import BreadCrumb from "../Components/BreadCrumb";
-import { useParams } from "react-router-dom";
-import data from "../db";
+import { useParams, useNavigate } from "react-router-dom";
 import CardForm from "../Components/CardForm";
-import { useNavigate } from "react-router-dom";
-
-const { decks, cards } = data;
+import { useSelector, useDispatch } from "react-redux";
+import { updateCard } from "../redux/deckSlice";
 
 const EditCard = () => {
+  const { decks, cards } = useSelector((state) => state.data);
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { deckId, cardId } = useParams();
   const currentDeck = decks.find((item) => item.id == deckId);
   const currentCard = cards.find((item) => item.id == cardId);
@@ -17,10 +18,10 @@ const EditCard = () => {
 
   function onSubmit(event) {
     event.preventDefault();
-    currentCard.front = cardData.front;
-    currentCard.back = cardData.back;
+    dispatch(updateCard({ cardData }));
     navigate(`/decks/${deckId}`);
   }
+
   return (
     <div className="container w-75">
       <BreadCrumb

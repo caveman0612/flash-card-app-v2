@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import BreadCrumb from "../Components/BreadCrumb";
 import { useParams } from "react-router-dom";
-import data from "../db";
 import CardForm from "../Components/CardForm";
-
-const { decks, cards } = data;
+import { useSelector, useDispatch } from "react-redux";
+import { addCard } from "../redux/deckSlice";
 
 const CreateCard = () => {
+  const dispatch = useDispatch();
   const { deckId } = useParams();
+  const { decks } = useSelector((state) => state.data);
   const currentDeck = decks.find((item) => item.id == deckId);
 
   const _initialFormData = { front: "", back: "" };
@@ -22,7 +23,7 @@ const CreateCard = () => {
       back: formData.back,
       deckId,
     };
-    cards.push(newCard);
+    dispatch(addCard({ newCard }));
     setFormData(_initialFormData);
   }
 
