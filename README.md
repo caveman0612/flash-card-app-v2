@@ -1,5 +1,7 @@
 # Study Tool / Flash Card Application
 
+Live - https://flash-card-app-v2.herokuapp.com/
+
 ## Overview
 
 This Project allows for creating and editing decks of flashcards. The user can make mulitple decks and have many cards in each deck. They can go through and modify the decks and cards any time and delete if necessary. Lastly, there is a study feature that will only show you the front of one card at a time and you can study to see if you know the back.
